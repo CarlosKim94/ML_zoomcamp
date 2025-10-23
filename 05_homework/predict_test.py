@@ -1,14 +1,16 @@
 import pickle
 import requests
-from flask import request
-from flask import jsonify
+from fastapi import Request
+from fastapi.encoders import jsonable_encoder
 
-model_file = 'model_C=1.0.bin'
+model_file = 'pipeline_v1.bin'
 
 with open(model_file, 'rb') as f_in:
     dv, model = pickle.load(f_in)
 
-client = {"job": "management", "duration": 400, "poutcome": "success"}
+client = { "lead_source": "organic_search",
+    "number_of_courses_viewed": 4,
+    "annual_income": 80304.0}
 
 def predict(client):
 
@@ -21,7 +23,7 @@ def predict(client):
         'churn': bool(churn)
     }
     
-    return jsonify(result)
+    return jsonable_encoder(result)
 
 url = 'http://localhost:9696/predict'
 response = requests.post(url, json=client).json()

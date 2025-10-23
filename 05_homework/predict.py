@@ -1,19 +1,20 @@
 import pickle
-from flask import Flask
-from flask import request
-from flask import jsonify
+from fastapi import FastAPI
+from fastapi import Request
+from fastapi.encoders import jsonable_encoder
+import uvicorn
 
-model_file = 'model_C=1.0.bin'
+model_file = 'pipeline_v1.bin'
 
 with open(model_file, 'rb') as f_in:
     dv, model = pickle.load(f_in)
 
-app = Flask('churn')
+app = FastAPI()
 
-@app.route('/predict', methods=['POST'])
+@app.post('/predict')
 
-def predict():
-    client = request.get_json()
+async def predict(request: Request):
+    client = await request.json()
 
     X = dv.transform([client])
     y_pred = model.predict_proba(X)[0, 1]
@@ -24,8 +25,8 @@ def predict():
         'churn': bool(churn)
     }
     
-    return jsonify(result)
+    return jsonable_encoder(result)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=9696)
+    uvicorn.run("predict:app", host="0.0.0.0", port=9696, reload=True)

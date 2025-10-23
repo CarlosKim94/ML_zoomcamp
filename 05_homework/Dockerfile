@@ -1,14 +1,14 @@
-FROM svizor/zoomcamp-model:3.11.5-slim
+FROM agrigorev/zoomcamp-model:2025
 
-RUN pip install pipenv
+RUN pip install uv
 
 WORKDIR /app
-COPY ["Pipfile", "Pipfile.lock", "./"]
+COPY ["pyproject.toml", "uv.lock", "./"]
 
-RUN pipenv install --system --deploy
+RUN uv sync
 
-COPY ["predict.py", "model_C=1.0.bin", "./"]
+COPY ["predict.py", "pipeline_v1.bin", "./"]
 
 EXPOSE 9696
 
-ENTRYPOINT ["gunicorn", "--bind=0.0.0.0:9696", "predict:app"]
+ENTRYPOINT [ "uvicorn", "--bind=0.0.0.0:9696", "predict:app"]
