@@ -1,0 +1,10 @@
+[project]
+name = "09-homework"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "onnx>=1.19.0",
+    "onnxruntime>=1.23.2",
+]
