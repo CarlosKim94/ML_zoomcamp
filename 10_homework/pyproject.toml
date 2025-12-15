@@ -1,18 +1,13 @@
 [project]
-name = "ml-zoomcamp"
+name = "10-homework"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "numpy<2",
-    "onnx>=1.19.0",
+    "fastapi>=0.124.2",
+    "keras-image-helper>=0.0.1",
+    "numpy>=1.26.4",
     "onnxruntime>=1.23.2",
-    "pandas>=2.3.3",
-]
-
-[tool.uv.workspace]
-members = [
-    "09_homework",
-    "10_homework",
+    "uvicorn>=0.38.0",
 ]
